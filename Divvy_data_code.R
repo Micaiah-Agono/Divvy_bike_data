@@ -5,10 +5,6 @@ library(conflicted)
 conflict_prefer("filter", "dplyr")
 conflict_prefer("lag", "dplyr")
 
-
-#=====================
-# STEP 1: COLLECTING DATA
-#=====================
 # # Uploading Divvy datasets (csv files) here
 q1_2019 <- read_csv("C:/Users/user/OneDrive/Desktop/My Project/Project 1/raw data/Divvy_Trips_2019_Q1.csv")
 q2_2019 <- read_csv("C:/Users/user/OneDrive/Desktop/My Project/Project 1/raw data/Divvy_Trips_2019_Q2.csv")
@@ -16,10 +12,6 @@ q3_2019 <- read_csv("C:/Users/user/OneDrive/Desktop/My Project/Project 1/raw dat
 q4_2019 <- read_csv("C:/Users/user/OneDrive/Desktop/My Project/Project 1/raw data/Divvy_Trips_2019_Q4.csv")
 q1_2020 <- read_csv("C:/Users/user/OneDrive/Desktop/My Project/Project 1/raw data/Divvy_Trips_2020_Q1.csv")
 
-
-#====================================================
-# STEP 2: WRANGLING DATA AND COMBINING INTO A SINGLE FILE
-#====================================================
 # Comparing column names each of the files
 # While the names don't have to be in the same order, they DO need to match perfectly before
 # we can use a command to join them into one file
@@ -110,10 +102,6 @@ all_trips <- all_trips %>%
             ,`Member Gender`, '05 - Member Details Member Birthday Year', start_lat
             , start_lng, end_lat, end_lng))
 
-
-#======================================================
-# STEP 3: CLEAN UP AND ADD DATA TO PREPARE FOR ANALYSIS
-#======================================================
 # Inspect the new table that has been created
 colnames(all_trips)
 str(all_trips)
@@ -122,9 +110,7 @@ dim(all_trips)
 head(all_trips)
 summary(all_trips)
 
-
-
-# There are a few problems we will need to fix:
+# There are a few problems to be fixed:
 # (1) In the "usertype" column, there are two names for members ("member" and "Subscriber")
 #and two names for casual riders ("Customer" and "casual"). Let's consolidate that from four to two labels.
 # (2) The data can only be aggregated at the ride-level, which is too granular.
@@ -133,9 +119,6 @@ summary(all_trips)
 # (3) Adding a calculated field for length of ride since the 2020Q1 data did not have
 #the "tripduration" column. Added "ride_length" to the entire dataframe for consistency.
 
-
-
-
 # In the "usertype" column, replace "member" with "Subscriber" and "casual" with "Customer"
 # Before 2020, Divvy used different labels for these two types of riders ... we will want to make
 #our dataframe consistent
@@ -143,9 +126,7 @@ summary(all_trips)
 
 table(all_trips$usertype)
 
-
 # Reassigning to the desired values
-
 
 all_trips <- all_trips %>%
   mutate(usertype = recode(usertype
@@ -181,9 +162,6 @@ is.numeric(all_trips$ride_length)
 
 all_trips_v2 <- all_trips[!(all_trips$start_station_name == "HQ QR" | all_trips$ride_length<0),]
 
-#=====================================
-# STEP 4: CONDUCTED DESCRIPTIVE ANALYSIS
-#=====================================
 # Descriptive analysis on ride_length (all figures in seconds)
 mean(all_trips_v2$ride_length) #straight average (total ride length / rides)
 median(all_trips_v2$ride_length) #midpoint number in the ascending array of ride lengths
@@ -240,12 +218,6 @@ all_trips_v2 %>%
   ggplot(aes(x = weekday, y = average_duration, fill = usertype)) +
   geom_col(position = "dodge")
 
-
-
-
-#=================================================
-# STEP 5: EXPORTED SUMMARY FILE FOR FURTHER ANALYSIS
-#=================================================
 # Creating a csv file that we will visualize in Excel, Tableau, or my presentation software
 avg_ride_length <- aggregate(all_trips_v2$ride_length ~ all_trips_v2$usertype +
                       all_trips_v2$day_of_week, FUN = mean)
