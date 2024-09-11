@@ -1,0 +1,15 @@
+"","all_trips_v2$usertype","all_trips_v2$day_of_week","all_trips_v2$trip_id"
+"1","Customer","Sunday",185059
+"2","Subscriber","Sunday",292198
+"3","Customer","Monday",105188
+"4","Subscriber","Monday",520703
+"5","Customer","Tuesday",93238
+"6","Subscriber","Tuesday",566722
+"7","Customer","Wednesday",94946
+"8","Subscriber","Wednesday",558254
+"9","Customer","Thursday",105599
+"10","Subscriber","Thursday",548160
+"11","Customer","Friday",125779
+"12","Subscriber","Friday",512462
+"13","Customer","Saturday",215536
+"14","Subscriber","Saturday",317267
